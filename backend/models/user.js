@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-    following:{
+    followings:{
         type: Array,
         default: []
     },
@@ -40,6 +40,23 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    desc:{
+        type: String,
+        max: 100
+    },
+    city:{
+        type: String,
+        max: 50
+    },
+    from:{
+        type: String,
+        max: 50
+    },
+    relationship:{
+        type: Number,
+        enum: [1, 2, 3]
+    },
+
 },
 {timestamps: true}
 );
