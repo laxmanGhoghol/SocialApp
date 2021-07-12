@@ -33,7 +33,7 @@ router.post("/login", async(req, res)=>{
         !val && res.status(404).json('user not found'); //if one side of AND is null it will never call second operand(if first op true then call second operrand)
         
         const valPass = await bcrypt.compare(req.body.password, val.password);
-        !valPass && res.status(400).json('wrong password'); // if valPass is is not true then call second operand
+        !valPass && res.status(400).json('wrong password'); // if valPass is is true then call second operand
         
         //if email and passowrd is valid
         res.status(200).json(val);
