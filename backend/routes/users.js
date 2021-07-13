@@ -1,9 +1,26 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt')
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 const { route } = require('./auth');
+
+//authenticate jwt token
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null) return res.sendStatus(401)
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user
+        next()
+    });
+
+}
+
 //update user
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticateToken, async (req, res) => {
     if (req.body.userId === req.params.id || req.body.isAdmin) {
         if (req.body.password) {
             try {
@@ -25,7 +42,7 @@ router.put("/:id", async (req, res) => {
     }
 })
 //delete user
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
     if (req.body.userId === req.params.id || req.body.isAdmin) {
         try {
             await User.deleteOne({ _id: req.params.id });
@@ -39,7 +56,7 @@ router.delete("/:id", async (req, res) => {
     }
 })
 //get user
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticateToken, async (req, res) => {
     if (req.body.userId === req.params.id) {
         try {
             const user = await User.findById(req.params.id).lean();
@@ -55,7 +72,7 @@ router.get("/:id", async (req, res) => {
 })
 
 //follow user
-router.put("/:id/follow", async (req, res) => {
+router.put("/:id/follow", authenticateToken, async (req, res) => {
     if (req.body.userId !== req.params.id) {
         try {
             const user = await User.findById(req.params.id);   //user to follow
@@ -78,7 +95,7 @@ router.put("/:id/follow", async (req, res) => {
     }
 })
 //unfollow user
-router.put("/:id/unfollow", async (req, res) => {
+router.put("/:id/unfollow", authenticateToken, async (req, res) => {
     if (req.body.userId !== req.params.id) {
         try {
             const user = await User.findById(req.params.id);

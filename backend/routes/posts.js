@@ -1,9 +1,24 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const router = require('express').Router();
+const jwt = require('jsonwebtoken')
 
+//authenticate jwt token
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null) return res.sendStatus(401)
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user
+        next()
+    });
+
+}
 //create post
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
     const newPost = new Post(req.body)
     try {
         const saved = await newPost.save();
@@ -14,7 +29,7 @@ router.post('/', async (req, res) => {
 });
 
 //update post
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticateToken, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (post.userId === req.body.userId) {
@@ -30,7 +45,7 @@ router.put('/:id', async (req, res) => {
 
 });
 //delete post
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (post.userId === req.body.userId) {
@@ -46,7 +61,7 @@ router.delete('/:id', async (req, res) => {
 
 });
 //like post
-router.put('/:id/like', async (req, res)=> {
+router.put('/:id/like', authenticateToken, async (req, res)=> {
 try {
     const post = await Post.findById(req.params.id);
     if(!post.likes.includes(req.body.userId)){
@@ -62,7 +77,7 @@ try {
 }
 });
 //get post
-router.get('/:id', async(req, res)=>{
+router.get('/:id', authenticateToken, async(req, res)=>{
     try {
         const post = await Post.findById(req.params.id);
         res.status(200).json(post)
@@ -72,9 +87,10 @@ router.get('/:id', async(req, res)=>{
 });
 
 //get list of posts
-router.get('/timeline/data', async(req, res)=>{
+router.get('/timeline/data', authenticateToken, async(req, res)=>{
     try {
-        const user = await User.findById(req.body.userId);
+        const user = await User.findById(req.user.userId);
+        //const user = await User.findById(req.body.userId);
         const userPosts = await Post.find({userId: user._id});
         const friendsPosts = await Promise.all(
             user.followings.map((friendsId) => {

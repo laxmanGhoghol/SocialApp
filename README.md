@@ -2,12 +2,16 @@
 ## Build using MERN.
 
 ### Authentication API:
-- User Registration:(POST) http://localhost:8800/api/auth/register
+- User Registration:(POST) http://localhost:8100/api/auth/register
 	- Required Fields: username, password, email
-- User Login:(POST) http://localhost:8800/api/auth/login
+- User Login:(POST) http://localhost:8100/api/auth/login
 	- Required Fields: email, password
+- User Logout:(DELETE) http://localhost:8100/api/auth/logout
+	- Required Fields: token (refreshtoken)
+- Refresh AccessToken :(POST) http://localhost:8100/api/auth/token
+	- Required Fields: token (refreshToken)
 
-### User API:
+### User API: (JWT based authorization, requires valid token to access this apis)
 - Update user profile: (PUT) http://localhost:8800/api/users/:id
 	- Required Fields: userId.
 - deleter user account: (DELETE) http://localhost:8800/api/users/:id
@@ -19,7 +23,7 @@
 - unfollow user:(PUT) http://localhost:8800/api/users/:id/unfollow
 	- Required Fields: userId, id(id of user to unfollow)
 
-### Posts API:
+### Posts API: (JWT based authorization, requires valid token to access this apis)
 - Create Post: (POST) http://localhost:8800/api/posts
 	- Required Fields: userId, desc
 - Update Post: (PUT) http://localhost:8800/api/posts/:id
@@ -32,3 +36,6 @@
 	- Required Fields: id(id of post)
 - Get List of Posts: (GET) http://localhost:8800/api/posts/timeline/data
 	- Required Fields: UserId
+
+
+I have used JWT based authorization so to access posts and user data. Here two servers are used one for authenticationa and another for posts,user requests.

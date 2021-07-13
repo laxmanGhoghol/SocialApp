@@ -1,15 +1,17 @@
 const router = require('express').Router();
 const User = require("../models/User");
+const refreshTokensData = require('../models/refreshToken')
 const bcrypt = require("bcrypt")
+const jwt = require('jsonwebtoken')
 
 
 //register user
 router.post("/register", async (req, res) => {
-    
+
     //creating hash for password
     const salt = await bcrypt.genSalt(10);
     const hashpass = await bcrypt.hash(req.body.password, salt)
-    
+
     const newuser = new User({
         username: req.body.username,
         email: req.body.email,
@@ -26,20 +28,59 @@ router.post("/register", async (req, res) => {
 });
 
 //user login
-router.post("/login", async(req, res)=>{
-    try{
+router.post("/login", async (req, res) => {
+    try {
         //check if userid exists
-        const val = await User.findOne({email: req.body.email});
+        const val = await User.findOne({ email: req.body.email });
         !val && res.status(404).json('user not found'); //if one side of AND is null it will never call second operand(if first op true then call second operrand)
-        
+
         const valPass = await bcrypt.compare(req.body.password, val.password);
         !valPass && res.status(400).json('wrong password'); // if valPass is is true then call second operand
-        
+
         //if email and passowrd is valid
-        res.status(200).json(val);
-    } catch(err){
+        const accessToken = jwt.sign({ 'userId': val._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+        const refreshToken = jwt.sign({ 'userId': val._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '15d' })
+
+        const refreshTokendata = new refreshTokensData({
+            token: refreshToken
+        });
+        await refreshTokendata.save(); // saving refresh token in database
+
+        res.status(200).json({ 'accessToken': accessToken, 'refreshToken': refreshToken });
+    } catch (err) {
         res.status(400).json('Something went wrong')
     }
 });
+
+//to refresh token
+router.post('/token', async (req, res) => {
+    try {
+        const refreshToken = req.body.token;
+
+        if (refreshToken == null) return res.sendStatus(401)
+        const val = await refreshTokensData.findOne({'token': refreshToken});
+        !val && res.status(404).json('refresh token expired');
+
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+            if (err) return res.sendStatus(403)
+            const accessToken = jwt.sign({ 'userId': user.userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+            res.status(200).json({ 'accessToken': accessToken })
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+//delete refresh token
+router.delete('/logout', async (req, res) => {
+    try {
+        await refreshTokensData.findOneAndDelete({'token': req.body.token})
+        res.status(200).json('loged out')
+    } catch (err) {
+        res.status(500).json(err);
+    }
+})
+
+
 
 module.exports = router
