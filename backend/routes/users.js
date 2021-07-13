@@ -21,100 +21,95 @@ function authenticateToken(req, res, next) {
 
 //update user
 router.put("/:id", authenticateToken, async (req, res) => {
-    if (req.body.userId === req.params.id || req.body.isAdmin) {
+    if (req.user.userId === req.params.id || req.body.isAdmin) {
         if (req.body.password) {
             try {
                 const salt = await bcrypt.genSalt(10);
                 req.body.password = await bcrypt.hash(req.body.password, salt)
             } catch (err) {
-                return res.status(500).json(err);
+                return res.status(500).json({ 'ok': false });
             }
         }
         try {
-            const user = await User.findByIdAndUpdate(req.params.id, { $set: req.body });
-            res.status(200).json('account has been updated');
+            await User.findByIdAndUpdate(req.params.id, { $set: req.body });
+            res.status(200).json({ 'ok': true });
         } catch (err) {
-            return res.status(500).json('invalid data')
+            return res.status(500).json({ 'ok': false })
         }
     }
     else {
-        res.status(403).json('you can update only your account')
+        res.status(403).json({ 'ok': false })
     }
 })
 //delete user
 router.delete("/:id", authenticateToken, async (req, res) => {
-    if (req.body.userId === req.params.id || req.body.isAdmin) {
+    if (req.user.userId === req.params.id || req.body.isAdmin) {
         try {
             await User.deleteOne({ _id: req.params.id });
-            res.status(200).json('account has been deleted');
+            res.status(200).json({ 'ok': true });
         } catch (err) {
-            res.status(500).json(err);
+            res.status(500).json({ 'ok': false });
         }
     }
     else {
-        res.status(403).json('you can delete only your account')
+        res.status(403).json({ 'ok': false })
     }
 })
 //get user
 router.get("/:id", authenticateToken, async (req, res) => {
-    if (req.body.userId === req.params.id) {
-        try {
-            const user = await User.findById(req.params.id).lean();
-            const { password, updatedAt, __v, isAdmin, ...rest } = user // destructuring object to select only important fields
-            res.status(200).json(rest);
-        } catch (err) {
-            res.status(500).json('invalid user id');
-        }
-    }
-    else {
-        res.status(404).json("you have to login first")
+    try {
+        const user = await User.findById(req.params.id).lean();
+        const { password, updatedAt, __v, isAdmin, ...rest } = user // destructuring object to select only important fields
+        res.status(200).json({ 'ok': true, 'data': rest });
+    } catch (err) {
+        res.status(500).json({ 'ok': false });
     }
 })
 
 //follow user
 router.put("/:id/follow", authenticateToken, async (req, res) => {
-    if (req.body.userId !== req.params.id) {
+    if (req.user.userId !== req.params.id) {
         try {
             const user = await User.findById(req.params.id);   //user to follow
-            const currUser = await User.findById(req.body.userId); //current user
+            const currUser = await User.findById(req.user.userId); //current user
 
-            if (!user.followers.includes(req.body.userId)) { // check if already following the user
-                await user.updateOne({ $push: { followers: req.body.userId } });
+            if (!user.followers.includes(req.user.userId)) { // check if already following the user
+                await user.updateOne({ $push: { followers: req.user.userId } });
                 await currUser.updateOne({ $push: { followings: req.params.id } });
 
-                res.status(200).json('following');
+                res.status(200).json({ 'ok': true });
             }
             else {
-                res.status(403).json('You already follow the user')
+                res.status(403).json({ 'ok': false, 'err': 'already following' })
             }
         } catch (err) {
-            res.status(403).json(err);
+            res.status(403).json({ 'ok': false });
         }
     } else {
-        res.status(500).json('you cant follow yourself')
+        res.status(500).json({ 'ok': false, 'err': "can't follow yourself" })
     }
 })
 //unfollow user
 router.put("/:id/unfollow", authenticateToken, async (req, res) => {
-    if (req.body.userId !== req.params.id) {
+    if (req.user.userId !== req.params.id) {
         try {
             const user = await User.findById(req.params.id);
-            const currUser = await User.findById(req.body.userId);
+            const currUser = await User.findById(req.user.userId);
 
-            if (user.followers.includes(req.body.userId)) { //check if not following user already.
-                await user.updateOne({ $pull: { followers: req.body.userId } });
+            if (user.followers.includes(req.user.userId)) { //check if not following user already.
+                await user.updateOne({ $pull: { followers: req.user.userId } });
                 await currUser.updateOne({ $pull: { followings: req.params.id } });
 
-                res.status(200).json('unfollowing');
+                res.status(200).json({ 'ok': true });
             }
             else {
-                res.status(403).json('already not following')
+                res.status(403).json({ 'ok': false, 'data': 'not following' })
             }
         } catch (err) {
-            res.status(403).json(err);
+            res.status(403).json({ 'ok': false });
         }
     } else {
-        res.status(500).json('you cant unfollow yourself')
+        res.status(500).json({ 'ok': false })
     }
 })
 

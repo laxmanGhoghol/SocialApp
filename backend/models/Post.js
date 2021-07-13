@@ -3,11 +3,12 @@ const mongoose = require("mongoose")
 const PostSchema = new mongoose.Schema({
     userId:{
         type: String,
-        require: true
+        required: true
     },
     desc:{
         type:String,
-        max: 200
+        max: 200,
+        required: true
     },
     img:{
         type: String,
