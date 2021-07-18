@@ -9,7 +9,7 @@ const authRoute = require("./routes/auth")
 
 dotenv.config();
 mongooes.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
-    console.log('connected');
+    console.log('connected to database...');
 });
 
 //middleware
@@ -20,5 +20,5 @@ app.use(morgan('common'))
 app.use("/api/auth", authRoute)
 
 app.listen(8100, () => {
-    console.log('running');
+    console.log('Authentication API is running...');
 });
