@@ -1,6 +1,4 @@
-body {
-  font-family: "Josefin Sans", sans-serif;
-  font-family: "Lora", serif;
-  font-family: "Varela", sans-serif;
-  font-family: "Varela Round", sans-serif;
+*{
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
 }
