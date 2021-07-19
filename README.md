@@ -33,5 +33,10 @@
 	- Required Fields: id(id of post)
 - Get List of Posts: (GET) http://localhost:8800/api/posts/timeline/data
 
+### Conversation API: (JWT based authorization, requires valid token to access this apis)
+- Create Conversation: (POST) http://localhost:8800/api/conversation/create
+	- Required Fields: receiverID
+- Get conversations messages list : (GET) http://localhost:8800/api/conversation/:id
+- Get user's conversations list: (GET) http://localhost:8800/api/conversation/get
+- Delete conversation: (DELETE) http://localhost:8800/api/conversation/delete/:id
 
-I have used JWT based authorization so to access posts and user data. Here two servers are used one for authenticationa and another for posts,user requests.

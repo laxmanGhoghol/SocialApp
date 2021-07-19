@@ -13,7 +13,7 @@ const conversationRoute = require("./routes/conversations")
 
 dotenv.config();
 mongooes.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
-    console.log('connected to database');
+    console.log('connected to database...');
 });
 
 //middleware

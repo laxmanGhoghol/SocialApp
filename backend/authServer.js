@@ -17,6 +17,7 @@ app.use(express.json())
 app.use(helmet())
 app.use(morgan('common'))
 
+//route
 app.use("/api/auth", authRoute)
 
 app.listen(8100, () => {

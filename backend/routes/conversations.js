@@ -36,7 +36,7 @@ router.post("/create", authenticateToken, async (req, res) => {
     }
 });
 
-//get conversation
+//get conversation with messages
 router.get('/:id', authenticateToken, async (req, res) => {
     try {
         const conversation = await Conversation.findById(req.params.id)
@@ -50,6 +50,17 @@ router.get('/:id', authenticateToken, async (req, res) => {
     }
 })
 
+//get user's conversations list
+router.get('/get', authenticateToken, async (req, res) => {
+    try {
+        const conversations = await Conversation.find({ members: { $in: [req.user.userId] } });
+        res.status(200).json({ 'ok': true, 'data': conversations });
+
+    } catch (err) {
+        res.status(500).json({ 'ok': false })
+    }
+});
+
 //delete conversation
 router.delete('/delete/:id', authenticateToken, async (req, res) => {
     try {
@@ -57,12 +68,12 @@ router.delete('/delete/:id', authenticateToken, async (req, res) => {
         !conversation && res.status(404).json({ 'ok': false, 'err': 'conversation not found' })
         !conversation.members.includes(req.user.userId) && res.status(403).json({ 'ok': false, 'err': 'only member of conversation can delete it' })
         const membersSize = conversation.toObject().members.length
-        if(membersSize <= 1){
-            await Message.deleteMany({conversationId: conversation._id})
+        if (membersSize <= 1) {
+            await Message.deleteMany({ conversationId: conversation._id })
             await conversation.deleteOne();
         }
-        else{
-            await conversation.updateOne({ $pull: { members: req.body.userId } });
+        else {
+            await conversation.updateOne({ $pull: { members: req.user.userId } });
         }
         res.status(200).json({ 'ok': true })
     } catch (err) {
