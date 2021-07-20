@@ -1,0 +1,73 @@
+.register-container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    background-color: #f0f2f5;
+    align-items: center;
+    justify-content: center;
+}
+.registerWrapper{
+    width: 70%;
+    height: 70%;
+    display: flex;
+}
+.registerLeft, .registerRight{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.registerLogo{
+    color: #1775ee;
+    margin-bottom: 10px;
+    font-size: 50px;
+    font-weight: 800;
+}
+.registerDesc{
+    font-size: 24px;
+}
+.registerBox{
+    height: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.registerInput{
+    height: 50px;
+    border-radius: 10px;
+    font-size: 18px;
+    border: 1px solid gray;
+    padding-left: 20px;
+}
+.registerInput:focus{
+    outline: none;
+}
+.registerBtn{
+    height: 50px;
+    background-color: #1775ee;
+    color: white;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+.registerForgot{
+    text-align: center;
+    color: #1775ee;
+}
+.registerBtnRegister{
+    width: 60%;
+    height: 50px;
+    background-color: green;
+    color: white;
+    font-size: 18px;
+    border-radius: 10px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    align-self: center;
+}
