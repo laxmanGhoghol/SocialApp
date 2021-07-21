@@ -2,6 +2,7 @@ import React from 'react'
 import './RightBar.css'
 export default function RightBar({ profile }) {
     const HomeRightBar = () => {
+    const PF = "http://localhost:3000/assets/"
         return (
             <>
 
@@ -11,14 +12,14 @@ export default function RightBar({ profile }) {
                         <b>Laxman Desai</b> and <b>3 other friends</b> have a birthday today
                     </span>
                 </div>
-                <img src="assets/ad.png" alt="" className="rightbarAd" />
+                <img src={PF + "ad.png"} alt="" className="rightbarAd" />
                 <h4 className="rightbarTitle">
                     Online Friends
                 </h4>
                 <ul className="rightbarFriendList">
                     <li className="rightbarFriend">
                         <div className="rightbarProfileImgContainer">
-                            <img className="rightbarProfileImg" src="assets/person/2.jpeg" alt="" />
+                            <img className="rightbarProfileImg" src={PF + "person/2.jpeg"} alt="" />
                             <span className="rightbarOnline"></span>
                         </div>
                         <span className="rightbarUsername">Rita Desai</span>

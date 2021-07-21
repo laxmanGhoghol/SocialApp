@@ -3,11 +3,13 @@ import './Share.css'
 import { PhotoLibrary, Label, LocationOn, EmojiEmotions } from '@material-ui/icons'
 
 export default function Share() {
+    const PF = "http://localhost:3000/assets/"
+
     return (
         <div className="share-container">
             <div className="shareWrapper">
                 <div className="shareTop">
-                    <img src="./assets/person/1.jpg" className="ShareProfileImg" alt="" />
+                    <img src={PF + "person/1.jpg"} className="ShareProfileImg" alt="" />
                     <input type="text" className="shareInput" placeholder="What's in your mind?" id="" />
                 </div>
                 <hr className="shareHr" />
