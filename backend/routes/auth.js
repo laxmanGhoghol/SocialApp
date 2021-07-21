@@ -30,7 +30,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
     try {
         //check if userid exists
-        const val = await User.findOne({ email: req.body.email });
+        const val = await User.findOne({ email: req.body.email }).lean();
         !val && res.status(404).json({ 'ok': false, 'err': 'wrong email' }); //if one side of AND is null it will never call second operand(if first op true then call second operrand)
 
         const valPass = await bcrypt.compare(req.body.password, val.password);
@@ -44,8 +44,7 @@ router.post("/login", async (req, res) => {
             token: refreshToken
         });
         await refreshTokendata.save(); // saving refresh token in database
-
-        res.status(200).json({ 'accessToken': accessToken, 'refreshToken': refreshToken });
+        res.status(200).json({'ok': true, 'accessToken': accessToken, 'refreshToken': refreshToken });
     } catch (err) {
         res.status(400).json({ 'ok': false })
     }

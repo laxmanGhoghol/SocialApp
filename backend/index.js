@@ -9,7 +9,7 @@ const userRoute = require("./routes/users")
 const postRoute = require("./routes/posts")
 const messageRoute = require("./routes/messages")
 const conversationRoute = require("./routes/conversations")
-
+const cors = require('cors')
 
 dotenv.config();
 mongooes.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
@@ -20,6 +20,9 @@ mongooes.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
 app.use(express.json())
 app.use(helmet())
 app.use(morgan('common'))
+app.use(cors({
+    origin: "*"
+}))
 
 app.use("/api/users", userRoute)
 app.use("/api/posts", postRoute)

@@ -6,6 +6,7 @@ const dotenv = require('dotenv')
 const mongooes = require('mongoose')
 const { json } = require("express")
 const authRoute = require("./routes/auth")
+const cors = require('cors')
 
 dotenv.config();
 mongooes.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
@@ -16,6 +17,9 @@ mongooes.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
 app.use(express.json())
 app.use(helmet())
 app.use(morgan('common'))
+app.use(cors({
+    origin: "*"
+}))
 
 //route
 app.use("/api/auth", authRoute)
