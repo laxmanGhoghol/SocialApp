@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const Message = require("../models/Message");
 const jwt = require('jsonwebtoken');
+const multer = require('multer')
 
 //authenticate jwt token
 function authenticateToken(req, res, next) {
@@ -16,18 +16,25 @@ function authenticateToken(req, res, next) {
     });
 
 }
-//post message
-router.post('/', authenticateToken, async (req, res)=>{
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/images");
+    },
+    filename: (req, file, cb) => {
+        console.log(req);
+        cb(null, file.originalname);
+    },
+});
+
+
+const upload = multer({ storage });
+router.post("/",  upload.single("file"), (req, res) => {
     try {
-        const new_msg = new Message({
-            text: req.body.text,
-            senderId: req.user.userId,
-            conversationId: req.body.conversationId
-        });
-        const msg = await new_msg.save();
-        res.status(200).json({'ok':true, 'data': {'text': msg.text, 'senderId': msg.senderId}})
+        return res.status(200).json({ 'ok': true, 'data': 'uploaded.' })
     } catch (err) {
-        res.status(500).json({'ok': false})
+        console.log(err);
     }
 })
 

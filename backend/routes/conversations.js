@@ -41,7 +41,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
     try {
         const conversation = await Conversation.findById(req.params.id)
         if (!conversation.members.includes(req.user.userId)) {
-            res.status(403).json({ 'ok': false, 'err': 'only member of conversation can see it' })
+            res.status(400).json({ 'ok': false, 'err': 'only member of conversation can see it' })
         }
         const getconversation = await Message.find({ conversationId: conversation._id })
         res.status(200).json({ 'ok': true, 'data': getconversation });
@@ -65,8 +65,8 @@ router.get('/get', authenticateToken, async (req, res) => {
 router.delete('/delete/:id', authenticateToken, async (req, res) => {
     try {
         const conversation = await Conversation.findById(req.params.id);
-        !conversation && res.status(404).json({ 'ok': false, 'err': 'conversation not found' })
-        !conversation.members.includes(req.user.userId) && res.status(403).json({ 'ok': false, 'err': 'only member of conversation can delete it' })
+        !conversation && res.status(400).json({ 'ok': false, 'err': 'conversation not found' })
+        !conversation.members.includes(req.user.userId) && res.status(400).json({ 'ok': false, 'err': 'only member of conversation can delete it' })
         const membersSize = conversation.toObject().members.length
         if (membersSize <= 1) {
             await Message.deleteMany({ conversationId: conversation._id })

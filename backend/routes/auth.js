@@ -57,7 +57,10 @@ router.post('/token', async (req, res) => {
 
         if (refreshToken == null) return res.sendStatus(401)
         const val = await refreshTokensData.findOne({ 'token': refreshToken });
-        !val && res.status(404).json({ 'ok': false, 'err': 'token expired' });
+        if(!val){
+            res.status(404).json({ 'ok': false, 'err': 'token expired' });
+            return;
+        }
 
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403)

@@ -7,9 +7,11 @@ const mongooes = require('mongoose')
 const { json } = require("express")
 const userRoute = require("./routes/users")
 const postRoute = require("./routes/posts")
+const uploadRoute = require("./routes/FileUpload")
 const messageRoute = require("./routes/messages")
 const conversationRoute = require("./routes/conversations")
 const cors = require('cors')
+const path = require('path')
 
 dotenv.config();
 mongooes.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
@@ -23,11 +25,12 @@ app.use(morgan('common'))
 app.use(cors({
     origin: "*"
 }))
-
+app.use("/images", express.static(path.join(__dirname, "public/images")))
 app.use("/api/users", userRoute)
 app.use("/api/posts", postRoute)
 app.use("/api/message", messageRoute)
 app.use("/api/conversation", conversationRoute)
+app.use("/api/upload", uploadRoute)
 
 
 

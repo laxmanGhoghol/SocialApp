@@ -37,7 +37,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
         }
     }
     else {
-        res.status(403).json({ 'ok': false })
+        res.status(400).json({ 'ok': false })
     }
 })
 //delete user
@@ -51,7 +51,7 @@ router.delete("/:id", authenticateToken, async (req, res) => {
         }
     }
     else {
-        res.status(403).json({ 'ok': false })
+        res.status(400).json({ 'ok': false })
     }
 })
 //get user
@@ -65,7 +65,7 @@ router.get("/:id", authenticateToken, async (req, res) => {
     }
 })
 
-router.get("/get", authenticateToken, async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
     try {
         const user = await User.findById(req.user.userId).lean();
         const { password, updatedAt, __v, isAdmin, ...rest } = user // destructuring object to select only important fields
@@ -89,10 +89,10 @@ router.put("/:id/follow", authenticateToken, async (req, res) => {
                 res.status(200).json({ 'ok': true });
             }
             else {
-                res.status(403).json({ 'ok': false, 'err': 'already following' })
+                res.status(400).json({ 'ok': false, 'err': 'already following' })
             }
         } catch (err) {
-            res.status(403).json({ 'ok': false });
+            res.status(400).json({ 'ok': false });
         }
     } else {
         res.status(500).json({ 'ok': false, 'err': "can't follow yourself" })
@@ -112,10 +112,10 @@ router.put("/:id/unfollow", authenticateToken, async (req, res) => {
                 res.status(200).json({ 'ok': true });
             }
             else {
-                res.status(403).json({ 'ok': false, 'data': 'not following' })
+                res.status(400).json({ 'ok': false, 'data': 'not following' })
             }
         } catch (err) {
-            res.status(403).json({ 'ok': false });
+            res.status(400).json({ 'ok': false });
         }
     } else {
         res.status(500).json({ 'ok': false })

@@ -25,7 +25,7 @@ router.post('/', authenticateToken, async (req, res) => {
         const saved = await newPost.save();
         res.status(200).json({'ok': true});
     } catch (err) {
-        res.status(403).json({'ok': false});
+        res.status(400).json({'ok': false});
     }
 });
 
@@ -39,7 +39,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
             res.status(200).json({'ok': true});
         }
         else {
-            res.status(403).json({'ok': false})
+            res.status(400).json({'ok': false})
         }
     } catch (err) {
         res.status(500).json({'ok': false})
@@ -55,7 +55,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
             res.status(200).json({'ok': true});
         }
         else {
-            res.status(403).json({'ok': false})
+            res.status(400).json({'ok': false})
         }
     } catch (err) {
         res.status(500).json({'ok': false})
