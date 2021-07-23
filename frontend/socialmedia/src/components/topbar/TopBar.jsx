@@ -3,11 +3,18 @@ import './TopBar.css'
 import { Search, Person, Chat, Notifications } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext';
+import { useHistory } from 'react-router';
+import api from '../../apiCalls'
 
 export default function TopBar() {
 
-    const { user } = useContext(AuthContext)
-    const PF = "http://localhost:3000/assets/"
+    const { user, dispatch } = useContext(AuthContext)
+    const PF = "http://localhost:8800/images/"
+    const history = useHistory()
+    const handleLogout = (e) =>{
+        api.logout(dispatch); 
+        history.push("/login")
+    }
     return (
         <div className='topbar-container'>
 
@@ -28,9 +35,10 @@ export default function TopBar() {
                     <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                         <span className="tobarLink">Homepage</span>
                     </Link>
-                    <Link to="/profile:use" style={{textDecoration: "none", color: "white"}}>
+                    <Link to={"/profile:" + "user"} style={{textDecoration: "none", color: "white"}}>
                         <span className="tobarLink">Profile</span>
                     </Link>
+                    <span onClick={handleLogout} className="tobarLink">Logout</span>
                 </div>
                 <div className="topbarIcons">
                     <div className="topbarIconItem">
@@ -51,7 +59,7 @@ export default function TopBar() {
                             1
                         </span>
                     </div>
-                    <img src={PF + "person/" + user.user.profilePic} alt="" className="topbarImg" />
+                    <img src={PF + (user.profilePic ? user.profilePic : "noAvatar.png")} alt="" className="topbarImg" />
                 </div>
             </div>
 

@@ -6,19 +6,34 @@ import Profile from './pages/profile/Profile'
 import { Route, BrowserRouter as Router, Switch, Redirect, } from 'react-router-dom'
 import { useContext, useEffect } from 'react';
 import { AuthContext } from './context/AuthContext';
+import api from './apiCalls'
 
 function App() {
   const { user, dispatch } = useContext(AuthContext)
-  useEffect(()=>{
-    const stored_user = JSON.parse(localStorage.getItem('user'));
-    console.log(stored_user);
-    dispatch({ type: "LOGIN_SUCCESS" , payload: stored_user});
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (user == null) {
+      if (accessToken !== null && accessToken !== "null") {
+        const getuser = async () => {
+          try {
+            const userdata = await api.getUser();
+            dispatch({ type: "LOGIN_SUCCESS", payload: userdata });
+          } catch (error) {
+            console.log('login required')
+          }
+        }
+
+        getuser() //refresh login
+
+      }
+    }
+
   }, [])
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          {user ? <Home /> : <Login/>}
+          {user ? <Home /> : <Login />}
         </Route>
 
         <Route path="/login">
@@ -30,7 +45,7 @@ function App() {
         </Route>
 
         <Route path="/profile:username">
-          {user ? <Profile /> : <Login/>}
+          {user ? <Profile /> : <Login />}
         </Route>
 
       </Switch>

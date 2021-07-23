@@ -1,22 +1,19 @@
 import Share from '../share/Share'
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Feed.css'
 import Post from '../post/Post'
-import { AuthContext } from '../../context/AuthContext'
-import axios from 'axios'
+import api from '../../apiCalls'
 
 export default function Feed() {
-    const { user } = useContext(AuthContext)
-   const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState([])
 
-    useEffect(()=>{
-        const fetchposts  =  async ()=>{
-            await axios.get("http://127.0.0.1:8800/api/posts/timeline/data",
-             { headers: { 'Authorization': `Bearer ${user.accessToken}` } }
-             ).then((res) => {
-                 console.log(res.data.data[0].desc)
-                setPosts(res.data.data)
+    useEffect(() => {
+        const fetchposts = async () => {
+            const res = await api.getPosts();
+            setPosts(res.sort((p1, p2) =>{
+                return new Date(p2.createdAt) - new Date(p1.createdAt)
             })
+            )
         };
         fetchposts();
     }, [])
@@ -25,9 +22,7 @@ export default function Feed() {
             <div className="feedWrapper">
                 <Share />
                 {
-                    posts.map((p) => {
-                        return <Post key={p._id} post={p}/>
-                    }) 
+                    posts.map((p, i) => <Post key={i} post = {p}/>)
                 }
             </div>
         </div>

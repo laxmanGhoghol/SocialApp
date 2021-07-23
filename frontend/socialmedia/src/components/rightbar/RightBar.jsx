@@ -2,24 +2,24 @@ import React from 'react'
 import './RightBar.css'
 export default function RightBar({ profile }) {
     const HomeRightBar = () => {
-    const PF = "http://localhost:3000/assets/"
+    const PF = "http://localhost:8800/images/"
         return (
             <>
 
                 <div className="birthdayContainer">
-                    <img src="assets/gift.png" alt="" className="birthdayImg" />
+                    <img src={PF + "gift.png"} alt="" className="birthdayImg" />
                     <span className="birthdayText">
                         <b>Laxman Desai</b> and <b>3 other friends</b> have a birthday today
                     </span>
                 </div>
-                <img src={PF + "ad.png"} alt="" className="rightbarAd" />
+                <img src={PF + "rightImg.png"} alt="" className="rightbarAd" />
                 <h4 className="rightbarTitle">
                     Online Friends
                 </h4>
                 <ul className="rightbarFriendList">
                     <li className="rightbarFriend">
                         <div className="rightbarProfileImgContainer">
-                            <img className="rightbarProfileImg" src={PF + "person/2.jpeg"} alt="" />
+                            <img className="rightbarProfileImg" src={PF + "2.jpeg"} alt="" />
                             <span className="rightbarOnline"></span>
                         </div>
                         <span className="rightbarUsername">Rita Desai</span>
@@ -30,17 +30,17 @@ export default function RightBar({ profile }) {
         )
     }
 
-    const ProfileRightBar = () => {
+    const ProfileRightBar = (user) => {
         return (
             <>
                 <h4 className="rightbarProfileTitle">User Information</h4>
                 <div className="rightbarInfo">
                     <div className="rightbarInfoItem">
                         <span className="rightbarInfoItemKey">
-                            City:
+                            City: 
                         </span>
                         <span className="rightbarInfoItemValue">
-                            Deesa
+                        {user.city}
                         </span>
                     </div>
                     <div className="rightbarInfoItem">
@@ -48,7 +48,7 @@ export default function RightBar({ profile }) {
                             From:
                         </span>
                         <span className="rightbarInfoItemValue">
-                            Aseda
+                            {user.from}
                         </span>
                     </div>
                     <div className="rightbarInfoItem">
@@ -56,7 +56,7 @@ export default function RightBar({ profile }) {
                             Relationship:
                         </span>
                         <span className="rightbarInfoItemValue">
-                            Married
+                            {user.relationship}
                         </span>
                     </div>
                     <div className="rightbarInfoItem">
@@ -107,7 +107,7 @@ export default function RightBar({ profile }) {
     return (
         <div className="rightbar-container">
             <div className="rightbarWrapper">
-                {profile ? <ProfileRightBar /> : <HomeRightBar/>}
+                {profile ? <ProfileRightBar user={profile}/> : <HomeRightBar/>}
             </div>
         </div>
     )

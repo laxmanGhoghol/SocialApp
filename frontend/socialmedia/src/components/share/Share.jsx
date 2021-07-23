@@ -1,23 +1,48 @@
-import React from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import './Share.css'
-import { PhotoLibrary, Label, LocationOn, EmojiEmotions } from '@material-ui/icons'
+import { PermMedia, Label, LocationOn, EmojiEmotions } from '@material-ui/icons'
+import api from '../../apiCalls'
+import {AuthContext} from '../../context/AuthContext'
 
 export default function Share() {
-    const PF = "http://localhost:3000/assets/"
 
+    const PF = "http://localhost:8800/images/"
+
+    const {user}  = useContext(AuthContext)
+
+    const desc = useRef();
+    const [file, setFile] = useState(null);
+    const handleSubmit = (e)=>{
+        e.preventDefault();
+        const newPost = {
+            'desc': desc.current.value
+        }
+        if(file){
+            const data = new FormData();
+            const filename = Date.now() + file.name;
+            data.append("file", file, filename);
+            newPost.img = filename;
+            api.sharePost(newPost, data); 
+        } else{
+            api.sharePost(newPost, null);  
+            window.location.reload()
+        }
+        
+    }
     return (
         <div className="share-container">
-            <div className="shareWrapper">
+            <form className="shareWrapper">
                 <div className="shareTop">
-                    <img src={PF + "person/1.jpg"} className="ShareProfileImg" alt="" />
-                    <input type="text" className="shareInput" placeholder="What's in your mind?" id="" />
+                    <img src={PF + (user.profilePic ? user.profilePic : "noAvatar.png")} className="ShareProfileImg" alt="" />
+                    <input required ref={desc} type="text" className="shareInput" placeholder={"What's in your mind " + user.username + "?"} id="" />
                 </div>
                 <hr className="shareHr" />
                 <div className="shareBottom">
-                    <div className="shareBottomItem">
-                        <PhotoLibrary htmlColor="tomato" className="shareBottomIcon" />
+                    <label htmlFor="file"  className="shareBottomItem">
+                        <PermMedia htmlColor="tomato" className="shareBottomIcon" />    
                         <span className="shareBottomText">Photo or Video</span>
-                    </div>
+                        <input style={{display:"none"}} type="file" id="file" accept=".png, .jpg, .jpeg"  onChange={(e)=> setFile(e.target.files[0])} />
+                    </label>
                     <div className="shareBottomItem">
                         <Label htmlColor="blue" className="shareBottomIcon" />
                         <span className="shareBottomText">Tag</span>
@@ -30,9 +55,9 @@ export default function Share() {
                         <EmojiEmotions htmlColor="goldenrod" className="shareBottomIcon" />
                         <span className="shareBottomText">Feelings</span>
                     </div>
-                    <button className="shareBottomBtn">Share</button>
+                    <button type="submit" onClick={handleSubmit} className="shareBottomBtn">Share</button>
                 </div>
-            </div>
+            </form>
         </div>
     )
 }
