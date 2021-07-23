@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './Post.css'
 import { MoreVert, ThumbUp } from '@material-ui/icons'
 import api from '../../apiCalls'
+import { format } from 'timeago.js';
+
 
 export default function Post({ post }) {
     const [user, setUser] = useState({ 'username': "" });
@@ -36,7 +38,7 @@ export default function Post({ post }) {
                     <div className="postTopLeft">
                         <img src={PF + (user.profilePic ? user.profilePic : "noAvatar.png")} className="postProfileImg" alt="" />
                         <span className="postUsername">{user.username}</span>
-                        <span className="postDate">5 minit</span>
+                        <span className="postDate">{format(post.createdAt)}</span>
                     </div>
                     <div className="postTopRight">
                         <MoreVert />
