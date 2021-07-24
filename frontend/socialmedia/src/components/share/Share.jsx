@@ -22,7 +22,8 @@ export default function Share() {
             const filename = Date.now() + file.name;
             data.append("file", file, filename);
             newPost.img = filename;
-            api.sharePost(newPost, data); 
+            api.sharePost(newPost, data);
+            window.location.reload()
         } else{
             api.sharePost(newPost, null);  
             window.location.reload()

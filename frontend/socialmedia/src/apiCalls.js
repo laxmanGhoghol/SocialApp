@@ -104,6 +104,14 @@ const api = {
         } catch (err) {
             console.log(err)
         }
+    },
+    getFriends: async () =>{
+        try {
+            const friends = await axios.get("http://localhost:8800/api/users//friends/get")
+            return friends.data.data;
+        } catch (err) {
+            console.log(err);
+        }
     }
 
 }
@@ -111,7 +119,7 @@ export default api;
 
 const registerCall = async (userCredentials) => {
     try {
-        const res = await axios.post("http://localhost:8100/api/auth/register", userCredentials)
+        await axios.post("http://localhost:8100/api/auth/register", userCredentials)
         return true;
     } catch (err) {
         console.log(err);

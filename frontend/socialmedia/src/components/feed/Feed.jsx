@@ -1,12 +1,13 @@
 import Share from '../share/Share'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './Feed.css'
 import Post from '../post/Post'
 import api from '../../apiCalls'
+import { AuthContext } from '../../context/AuthContext'
 
 export default function Feed() {
+    const {user} = useContext(AuthContext)
     const [posts, setPosts] = useState([])
-
     useEffect(() => {
         const fetchposts = async () => {
             const res = await api.getPosts();
@@ -22,7 +23,7 @@ export default function Feed() {
             <div className="feedWrapper">
                 <Share />
                 {
-                    posts.map((p, i) => <Post key={i} post = {p}/>)
+                    posts.map((p, i) => <Post key={i} currUser={user._id} post = {p}/>)
                 }
             </div>
         </div>

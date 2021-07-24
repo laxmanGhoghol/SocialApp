@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './RightBar.css'
+import api from '../../apiCalls'
+
 export default function RightBar({ profile }) {
-    const HomeRightBar = () => {
+
     const PF = "http://localhost:8800/images/"
+
+    const [friends, setFriends] = useState([]);
+    useEffect(() => {
+            api.getFriends().then((res) => {
+                setFriends(res);
+            })
+    }, [])
+
+
+    const HomeRightBar = () => {
         return (
             <>
 
@@ -30,17 +42,17 @@ export default function RightBar({ profile }) {
         )
     }
 
-    const ProfileRightBar = (user) => {
+    const ProfileRightBar = ({ user }) => {
         return (
             <>
                 <h4 className="rightbarProfileTitle">User Information</h4>
                 <div className="rightbarInfo">
                     <div className="rightbarInfoItem">
                         <span className="rightbarInfoItemKey">
-                            City: 
+                            City:
                         </span>
                         <span className="rightbarInfoItemValue">
-                        {user.city}
+                            {user.city}
                         </span>
                     </div>
                     <div className="rightbarInfoItem">
@@ -64,40 +76,22 @@ export default function RightBar({ profile }) {
                             Followers:
                         </span>
                         <span className="rightbarInfoItemValue">
-                            10
+                            {user.followers.length}
                         </span>
                     </div>
                 </div>
                 <h4 className="rightbarProfileTitle">User Friends</h4>
                 <div className="rightbarFollowings">
-                    <div className="rightbarFollowing">
-                        <img src="assets/person/3.jpeg" alt="" className="rightbarFollowingImg" />
-                        <span className="rightbarFollowingName">Someone hero</span>
-                    </div>
-                    <div className="rightbarFollowing">
-                        <img src="assets/person/3.jpeg" alt="" className="rightbarFollowingImg" />
-                        <span className="rightbarFollowingName">Someone hero</span>
-                    </div>
-                    <div className="rightbarFollowing">
-                        <img src="assets/person/3.jpeg" alt="" className="rightbarFollowingImg" />
-                        <span className="rightbarFollowingName">Someone hero</span>
-                    </div>
-                    <div className="rightbarFollowing">
-                        <img src="assets/person/3.jpeg" alt="" className="rightbarFollowingImg" />
-                        <span className="rightbarFollowingName">Someone hero</span>
-                    </div>
-                    <div className="rightbarFollowing">
-                        <img src="assets/person/3.jpeg" alt="" className="rightbarFollowingImg" />
-                        <span className="rightbarFollowingName">Someone hero</span>
-                    </div>
-                    <div className="rightbarFollowing">
-                        <img src="assets/person/3.jpeg" alt="" className="rightbarFollowingImg" />
-                        <span className="rightbarFollowingName">Someone hero</span>
-                    </div>
-                    <div className="rightbarFollowing">
-                        <img src="assets/person/3.jpeg" alt="" className="rightbarFollowingImg" />
-                        <span className="rightbarFollowingName">Someone hero</span>
-                    </div>
+                    {
+                        friends.map((fnd, i) => (
+                            <div key={i} className="rightbarFollowing">
+                                <img src={ PF + (fnd.profilePic ? fnd.profilePic : "noAvatar.png")} alt="" className="rightbarFollowingImg" />
+                                <span className="rightbarFollowingName">{fnd.username}</span>
+                            </div>
+                        ))
+                    }
+
+
                 </div>
 
             </>
@@ -107,7 +101,7 @@ export default function RightBar({ profile }) {
     return (
         <div className="rightbar-container">
             <div className="rightbarWrapper">
-                {profile ? <ProfileRightBar user={profile}/> : <HomeRightBar/>}
+                {profile ? <ProfileRightBar user={profile} /> : <HomeRightBar />}
             </div>
         </div>
     )

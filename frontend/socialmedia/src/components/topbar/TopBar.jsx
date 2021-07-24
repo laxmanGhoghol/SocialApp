@@ -35,7 +35,7 @@ export default function TopBar() {
                     <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                         <span className="tobarLink">Homepage</span>
                     </Link>
-                    <Link to={"/profile:" + "user"} style={{textDecoration: "none", color: "white"}}>
+                    <Link to={"/profile:prof"} style={{textDecoration: "none", color: "white"}}>
                         <span className="tobarLink">Profile</span>
                     </Link>
                     <span onClick={handleLogout} className="tobarLink">Logout</span>

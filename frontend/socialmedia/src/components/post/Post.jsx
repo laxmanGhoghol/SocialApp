@@ -4,9 +4,11 @@ import { MoreVert, ThumbUp } from '@material-ui/icons'
 import api from '../../apiCalls'
 import { format } from 'timeago.js';
 
-
-export default function Post({ post }) {
+export default function Post({ post, currUser }) { 
     const [user, setUser] = useState({ 'username': "" });
+    const [likes, setLikes] = useState(post.likes.length)
+    const [isLiked, setIsLiked] = useState(post.likes.includes(currUser))
+
     useEffect(() => {
         const fetchusers = async () => {
             const res = await api.getProfile(post.userId)
@@ -14,19 +16,21 @@ export default function Post({ post }) {
         };
         fetchusers();
     }, [post.userId])
+    
     const PF = "http://localhost:8800/images/"
-    let isLiked = false;
 
     const likeHandler = (id) => {
         if (isLiked) {
             document.getElementById(id).style.color = "gray";
             api.disLikePost(post._id)
-            isLiked = false;
+            setLikes(likes - 1)
+            setIsLiked(false);
         }
         else {
             document.getElementById(id).style.color = "black";
             api.likePost(post._id)
-            isLiked = true;
+            setLikes(likes + 1)
+            setIsLiked(true);
         }
     }
 
@@ -51,8 +55,8 @@ export default function Post({ post }) {
                 </div>
                 <div className="postBottom">
                     <div className="postBottomLeft">
-                        <button className="postLikeIcon" onClick={() => { likeHandler(post._id) }} > <ThumbUp id={post._id} /></button>
-                        <span className="postLikeCounter">{post.likes.length}</span>
+                        <button style={{color: isLiked ? "black" : "gray"}} className="postLikeIcon" onClick={() => { likeHandler(post._id) }} > <ThumbUp id={post._id} /></button>
+                        <span className="postLikeCounter">{likes}</span>
                     </div>
                     <div className="postBottomRight">
                         <span className="postCommentText">0 Comments</span>

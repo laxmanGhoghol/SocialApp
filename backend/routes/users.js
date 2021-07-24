@@ -121,5 +121,19 @@ router.put("/:id/unfollow", authenticateToken, async (req, res) => {
         res.status(500).json({ 'ok': false })
     }
 })
+//get user friends/followings
+router.get("/friends/get", authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId);
+        const friends = await Promise.all(
+            user.followings.map(friendId =>{
+                return {_id, username, profilePic} = User.findById(friendId);
+            })
+        ) 
+        res.status(200).json({ 'ok': true, 'data': friends });
+    } catch (err) {
+        res.status(500).json({ 'ok': false })
+    }
+})
 
 module.exports = router

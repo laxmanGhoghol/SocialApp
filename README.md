@@ -1,6 +1,22 @@
 # Social Media App
 ## Build using MERN.
 
+####Steps:
+1.  cd backend (change current directory to backend)
+2. npm start
+3. npm run authStart
+4. change current directory to frontend/socialmedia
+5. npm start
+
+Bingo :blush:
+
+(**Note:**  Make sure **backend/.env** file cotains **MONGO_URL, ACCESS_TOKEN_SECRET,  and REFRESH_TOKEN_SECRET**)
+
+
+------------
+
+
+
 ### Authentication API:
 - User Registration:(POST) http://localhost:8100/api/auth/register
 	- Required Fields: username, password, email
@@ -40,3 +56,6 @@
 - Get user's conversations list: (GET) http://localhost:8800/api/conversation/get
 - Delete conversation: (DELETE) http://localhost:8800/api/conversation/delete/:id
 
+### Message API: (JWT based authorization, requires valid token to access this apis)
+- Create Message: (POST) http://localhost:8800/api/message/
+	- Required Fields: conversationId, text
