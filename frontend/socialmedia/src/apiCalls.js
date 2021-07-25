@@ -85,10 +85,9 @@ const api = {
     sharePost: async (postdata, filedata) => {
         try {
             if(filedata){
-                console.log(filedata.get("file"))
                 await axios.post("http://localhost:8800/api/upload", filedata);
             }
-            await axios.post("http://localhost:8800/api/posts/", postdata)
+            return await axios.post("http://localhost:8800/api/posts/", postdata)
         } catch (err) {
             console.log(err)
         }
