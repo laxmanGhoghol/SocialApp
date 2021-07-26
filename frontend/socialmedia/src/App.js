@@ -3,6 +3,8 @@ import Home from './pages/home/Home'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
 import Profile from './pages/profile/Profile'
+import SearchResult from './pages/SearchResult/SearchResult'
+import ErrorPage from './pages/ErrorPage/Error'
 import { Route, BrowserRouter as Router, Switch, Redirect, } from 'react-router-dom'
 import { useContext, useEffect } from 'react';
 import { AuthContext } from './context/AuthContext';
@@ -44,8 +46,15 @@ function App() {
           {user ? <Redirect to="/" /> : <Register />}
         </Route>
 
-        <Route path="/profile:username">
+        <Route path="/profile/:username">
           {user ? <Profile /> : <Login />}
+        </Route>
+        <Route path="/Search/:searchKey">
+          {user ? <SearchResult/> : <Login />}
+        </Route>
+
+        <Route path="*">
+          <ErrorPage />
         </Route>
 
       </Switch>

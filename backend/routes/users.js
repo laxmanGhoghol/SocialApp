@@ -126,14 +126,29 @@ router.get("/friends/get", authenticateToken, async (req, res) => {
     try {
         const user = await User.findById(req.user.userId);
         const friends = await Promise.all(
-            user.followings.map(friendId =>{
-                return {_id, username, profilePic} = User.findById(friendId);
+            user.followings.map(friendId => {
+                return { _id, username, profilePic } = User.findById(friendId);
             })
-        ) 
+        )
         res.status(200).json({ 'ok': true, 'data': friends });
     } catch (err) {
         res.status(500).json({ 'ok': false })
     }
 })
+
+//search users
+router.get("/search/:key", authenticateToken, async (req, res) => {
+    try {
+        const users = await User.find({ 'username': { $regex: req.params.key } })
+        const users_data = []
+        users.forEach(element => {
+            const {_id, username, profilePic} = element
+            users_data.push({_id, username, profilePic})
+        });
+        res.status(200).json({ 'ok': true, 'data': users_data })
+    } catch (err) {
+        res.status(500).json({ 'ok': false })
+    }
+});
 
 module.exports = router

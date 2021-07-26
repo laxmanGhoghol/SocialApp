@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 import './TopBar.css'
 import { Search, Person, Chat, Notifications } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
@@ -15,6 +15,11 @@ export default function TopBar() {
         api.logout(dispatch); 
         history.push("/login")
     }
+    const searckKey = useRef();
+    const handleSearchSubmit = (e) =>{
+        e.preventDefault();
+        history.push("/Search/" + searckKey.current.value)
+    }
     return (
         <div className='topbar-container'>
 
@@ -25,17 +30,18 @@ export default function TopBar() {
             </div>
 
             <div className="topbarCenter">
-                <div className="searchBar">
+                <form className="searchBar">
                     <Search className="searchIcon" />
-                    <input placeholder="Search frineds and posts" className="searchInput" />
-                </div>
+                    <input ref={searckKey} placeholder="Search frineds and posts" className="searchInput" />
+                    <button onClick={handleSearchSubmit} style={{display: "none"}} type="submit"></button>
+                </form>
             </div>
             <div className="topbarRight">
                 <div className="topbarLinks">
                     <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                         <span className="tobarLink">Homepage</span>
                     </Link>
-                    <Link to={"/profile:prof"} style={{textDecoration: "none", color: "white"}}>
+                    <Link to={"/profile/" + user._id} style={{textDecoration: "none", color: "white"}}>
                         <span className="tobarLink">Profile</span>
                     </Link>
                     <span onClick={handleLogout} className="tobarLink">Logout</span>

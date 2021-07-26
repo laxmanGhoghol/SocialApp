@@ -3,6 +3,7 @@ import './Post.css'
 import { MoreVert, ThumbUp } from '@material-ui/icons'
 import api from '../../apiCalls'
 import { format } from 'timeago.js';
+import { Link } from 'react-router-dom';
 
 export default function Post({ post, currUser }) { 
     const [user, setUser] = useState({ 'username': "" });
@@ -40,7 +41,7 @@ export default function Post({ post, currUser }) {
                 <div className="postTop">
 
                     <div className="postTopLeft">
-                        <img src={PF + (user.profilePic ? user.profilePic : "noAvatar.png")} className="postProfileImg" alt="" />
+                        <Link to={"/profile/" + user._id}><img src={PF + (user.profilePic ? user.profilePic : "noAvatar.png")} className="postProfileImg" alt="" /></Link>
                         <span className="postUsername">{user.username}</span>
                         <span className="postDate">{format(post.createdAt)}</span>
                     </div>
@@ -51,7 +52,7 @@ export default function Post({ post, currUser }) {
                 </div>
                 <div className="postCenter">
                     <span className="postText">{post.desc}</span>
-                    <img src={PF + (post.img ? post.img : "")} className="postImg" alt="" />
+                    <img src={(post.img ? (PF + post.img) : "")} className="postImg" alt="" />
                 </div>
                 <div className="postBottom">
                     <div className="postBottomLeft">

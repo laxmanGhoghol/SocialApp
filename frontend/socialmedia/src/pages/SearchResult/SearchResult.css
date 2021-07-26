@@ -1,0 +1,39 @@
+.SearchResultHomeContainer{
+    display: flex;
+    width: 100%;
+}
+.SearchResult-container{
+    flex: 5.5;
+}
+.SearchResultWrapper{
+    padding: 20px;
+}
+.searchItemCotainer{
+    width: 100%;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0,0,0,0.68);
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    margin: 30px 0;
+}
+.searchItemWrapper{
+    padding: 10px;
+}
+.searchItem{
+    display: flex;
+    align-items: center;
+}
+.searchItemImg{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.searchItemName{
+    font-weight: 500;
+}
+.SearchResultText{
+    font-weight: 500;
+    margin-top: 20px;
+}

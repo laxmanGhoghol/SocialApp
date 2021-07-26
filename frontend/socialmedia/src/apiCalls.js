@@ -106,10 +106,18 @@ const api = {
     },
     getFriends: async () =>{
         try {
-            const friends = await axios.get("http://localhost:8800/api/users//friends/get")
+            const friends = await axios.get("http://localhost:8800/api/users/friends/get")
             return friends.data.data;
         } catch (err) {
             console.log(err);
+        }
+    },
+    searchUsers: async (key) =>{
+        try {
+            const users = await axios.get("http://localhost:8800/api/users/search/" + key)
+            return users.data.data;
+        } catch (err) {
+            console.log(err)
         }
     }
 

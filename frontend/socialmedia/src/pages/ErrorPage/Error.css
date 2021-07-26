@@ -1,0 +1,35 @@
+.error-container{
+    width: calc(100vw - 20px);
+    height: calc(100vh - 20px);
+    background-color: #99ccff;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    display: flex;
+}
+.ErrorBox{
+    width: 70vw;
+    border: 3px solid black;
+    height: 70vh;
+    text-align: center;
+    box-shadow: 7px -8px 14px -2px rgba(0,0,0,0.62);
+    -webkit-box-shadow: 7px -8px 14px -2px rgba(0,0,0,0.62);
+    -moz-box-shadow: 7px -8px 14px -2px rgba(0,0,0,0.62);
+}
+.erroHeadingText{
+    font-size: 10vw;
+    color: red;
+}
+.errorSubHeadingText{
+    font-size: 5vw;
+}
+.errorLinkBtn{
+    margin-top: 4.9vh;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 3vw;
+    color: white;
+    background-color: #1775ee;
+    border: 5px solid black;
+    border-radius: 20px;
+}
