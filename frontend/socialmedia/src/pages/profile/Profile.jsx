@@ -4,6 +4,7 @@ import TopBar from '../../components/topbar/TopBar'
 import LeftBar from '../../components/leftbar/LeftBar'
 import RightBar from '../../components/rightbar/RightBar'
 import Feed from '../../components/feed/Feed'
+import EditProfile from '../../components/EditProfile/EditProfile'
 import { AuthContext } from '../../context/AuthContext';
 import { Link, useParams } from 'react-router-dom'
 import api from '../../apiCalls'
@@ -13,6 +14,7 @@ export default function Profile() {
     const username = useParams().username
     const { user: curruser } = useContext(AuthContext)
     const [user, setUser] = useState({});
+    
     useEffect(() => {
         if (username === curruser._id) {
             setUser(curruser);
@@ -22,7 +24,7 @@ export default function Profile() {
                 setUser(res);
             });
         }
-    }, [username])
+    }, [user._id, username, curruser])
 
     const UserProfile = () => {
         return (
@@ -42,7 +44,7 @@ export default function Profile() {
                             </div>
                         </div>
                         <div className="profileRightBottom">
-                            <Feed />
+                            <Feed profilePosts={user._id}/>
                             <RightBar profile={user} />
                         </div>
                     </div>
@@ -79,8 +81,9 @@ export default function Profile() {
                             </div>
                         </div>
                         <div className="profileRightBottom">
-                            <Feed />
+                            <Feed profilePosts={user._id}/>
                             <RightBar profile={curruser} />
+                            <EditProfile user={user}/>
                         </div>
                     </div>
                 </div>

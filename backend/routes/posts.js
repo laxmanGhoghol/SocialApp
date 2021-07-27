@@ -100,7 +100,16 @@ router.get('/timeline/data', authenticateToken, async(req, res)=>{
         )
         res.status(200).json({'ok': true, 'data': userPosts.concat(...friendsPosts)});
     } catch (err) {
-        res.status(404).json({'ok': false})
+        res.status(500).json({'ok': false})
+    }
+});
+
+router.get('/userPosts/:userId', authenticateToken, async (req, res)=>{
+    try {
+        const userPosts = await Post.find({'userId': req.params.userId});
+        res.status(200).json({'ok': true, 'data': userPosts});
+    } catch (err) {
+        res.status(500).json({'ok': false})
     }
 });
 module.exports = router

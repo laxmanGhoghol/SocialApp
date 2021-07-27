@@ -98,3 +98,24 @@
     object-fit: cover;
     border-radius: 5px;
 }
+.rightbarFollowingBtn{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: #1872f2;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.rightbarFollowingBtn:focus{
+    outline: non;
+}
+.rightbarFollowingName{
+    font-weight: 500;
+    text-align: center;
+}

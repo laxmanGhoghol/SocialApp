@@ -30,7 +30,7 @@ function App() {
       }
     }
 
-  }, [])
+  }, [user, dispatch])
   return (
     <Router>
       <Switch>

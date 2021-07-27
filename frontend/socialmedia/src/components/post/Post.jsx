@@ -6,7 +6,7 @@ import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
 
 export default function Post({ post, currUser }) { 
-    const [user, setUser] = useState({ 'username': "" });
+    const [user, setUser] = useState({});
     const [likes, setLikes] = useState(post.likes.length)
     const [isLiked, setIsLiked] = useState(post.likes.includes(currUser))
 

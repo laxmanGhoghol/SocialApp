@@ -119,7 +119,40 @@ const api = {
         } catch (err) {
             console.log(err)
         }
+    },
+    getUserPosts: async (pid)=>{
+        try {
+            const res = await axios.get("http://localhost:8800/api/posts/userPosts/" + pid);
+            return res.data.data;
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    followUser: async (uid) => {
+        try {
+            await axios.put("http://localhost:8800/api/users/" + uid + "/follow")
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    unfollowUser: async (uid) => {
+        try {
+            await axios.put("http://localhost:8800/api/users/" + uid + "/unfollow")
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    updateUserProfile: async (uid, updateData) =>{
+        try {
+            await axios.put("http://localhost:8800/api/users/" + uid, updateData);
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
     }
+    
+    
 
 }
 export default api;

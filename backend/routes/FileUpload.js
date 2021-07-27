@@ -23,7 +23,6 @@ const storage = multer.diskStorage({
         cb(null, "public/images");
     },
     filename: (req, file, cb) => {
-        console.log(req);
         cb(null, file.originalname);
     },
 });
@@ -34,6 +33,7 @@ router.post("/",  upload.single("file"), (req, res) => {
     try {
         return res.status(200).json({ 'ok': true, 'data': 'uploaded.' })
     } catch (err) {
+        res.status(500).json({'ok': false})
         console.log(err);
     }
 })

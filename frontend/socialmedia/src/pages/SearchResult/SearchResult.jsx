@@ -26,19 +26,16 @@ export default function SearchResult() {
                     <div className="SearchResultWrapper">
                         <Share />
                         <h3 className="SearchResultText">Search Results: {userList.length}</h3>
-                        {
-                            userList.map(user =>
-                                <div className="searchItemCotainer">
-                                    <div className="searchItemWrapper">
-                                        <div className="searchItem">
-                                           <Link to={"/profile/" + user._id}><img src={PF + (user.profilePic? user.profilePic : "noAvatar.png")} alt="" className="searchItemImg" /></Link>
-                                            <span className="searchItemName">{user.username}</span>
-                                        </div>
+                        <div className="searchItemCotainer">
+                            <div className="searchItemWrapper">
+                                {userList.map((user,i) =>
+                                    <div key={i}  className="searchItem">
+                                        <Link to={"/profile/" + user._id}><img src={PF + (user.profilePic ? user.profilePic : "noAvatar.png")} alt="" className="searchItemImg" /></Link>
+                                        <span key={i} className="searchItemName">{user.username}</span>
                                     </div>
-                                </div>
-
-                            )
-                        }
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <RightBar />

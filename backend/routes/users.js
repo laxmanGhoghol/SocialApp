@@ -20,7 +20,7 @@ function authenticateToken(req, res, next) {
 
 //update user
 router.put("/:id", authenticateToken, async (req, res) => {
-    if (req.user.userId === req.params.id || req.body.isAdmin) {
+    if (req.user.userId === req.params.id || req.user.isAdmin) {
         if (req.body.password) {
             try {
                 const salt = await bcrypt.genSalt(10);
@@ -139,7 +139,7 @@ router.get("/friends/get", authenticateToken, async (req, res) => {
 //search users
 router.get("/search/:key", authenticateToken, async (req, res) => {
     try {
-        const users = await User.find({ 'username': { $regex: req.params.key } })
+        const users = await User.find({$and: [{_id: {$ne: req.user.userId}}, { 'username': { $regex: req.params.key } }] })
         const users_data = []
         users.forEach(element => {
             const {_id, username, profilePic} = element
