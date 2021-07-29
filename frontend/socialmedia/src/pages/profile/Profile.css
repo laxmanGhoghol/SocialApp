@@ -50,3 +50,7 @@
 .noProfileText{
     margin-bottom: 10vh;
 }
+.ImageUploadDialogBtnCover{
+    top: 0 !important;
+    background-color: red;
+}

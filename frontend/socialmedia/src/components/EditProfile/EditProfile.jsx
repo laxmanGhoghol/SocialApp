@@ -58,7 +58,7 @@ export default function EditProfile({ user }) {
     const city = useRef();
     const from = useRef();
     const desc = useRef();
-    const [relationship, SetRelationshop] = useState(user.relationship);
+    const [relationship, SetRelationship] = useState(user.relationship);
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -83,6 +83,7 @@ export default function EditProfile({ user }) {
             if (api.updateUserProfile(user._id, updateData)) {
                 document.getElementById("TextInfo").className = "successInfo";
                 document.getElementById("TextInfo").innerHTML = "Updated Successfully!";
+                window.location.reload();
             }
             else {
                 document.getElementById("TextInfo").className = "errorInfo";
@@ -96,13 +97,13 @@ export default function EditProfile({ user }) {
     };
 
     const handleItemChange = (e) =>{
-        SetRelationshop(e.target.value)
+        SetRelationship(e.target.value)
     }
 
     return (
         <div>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                <EditIcon />
+                Edit <EditIcon />
             </Button>
             <Dialog onClose={handleClose} fullWidth aria-labelledby="customized-dialog-title" open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
@@ -117,7 +118,7 @@ export default function EditProfile({ user }) {
                         <label>Description:</label>
                         <input ref={desc} className="EditProfileInput" defaultValue={user.desc} type="text" placeholder="Description" />
                         <label>Relationship:</label>
-                        <select className="EditProfileInput" onChange={handleItemChange} id="simple-menu" keepMounted open={true} >
+                        <select value={relationship} className="EditProfileInput" onChange={handleItemChange} id="simple-menu" keepMounted open={true} >
                             <option  value="Married">Married</option >
                             <option  value="Single">Single</option >
                             <option  value="In a relationship">In a relationship</option >

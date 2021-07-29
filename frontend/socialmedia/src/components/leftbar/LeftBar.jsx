@@ -47,31 +47,7 @@ export default function LeftBar() {
                 <hr className="leftbarHr"/>
                 <ul className="leftbarFriendList">
                     <li className="leftbarFriend">
-                        <img src="./assets/person/1.jpg" alt="" className="leftbarFriendImg" />
-                        <span className="leftbarFriendName">Lakha Desai</span>
-                    </li>
-                    <li className="leftbarFriend">
-                        <img src="./assets/person/1.jpg" alt="" className="leftbarFriendImg" />
-                        <span className="leftbarFriendName">laxman Desai</span>
-                    </li>
-                    <li className="leftbarFriend">
-                        <img src="./assets/person/1.jpg" alt="" className="leftbarFriendImg" />
-                        <span className="leftbarFriendName">sanjay Desai</span>
-                    </li>
-                    <li className="leftbarFriend">
-                        <img src="./assets/person/1.jpg" alt="" className="leftbarFriendImg" />
-                        <span className="leftbarFriendName">Rita Desai</span>
-                    </li>
-                    <li className="leftbarFriend">
-                        <img src="./assets/person/1.jpg" alt="" className="leftbarFriendImg" />
-                        <span className="leftbarFriendName">Lakha Desai</span>
-                    </li>
-                    <li className="leftbarFriend">
-                        <img src="./assets/person/1.jpg" alt="" className="leftbarFriendImg" />
-                        <span className="leftbarFriendName">Lakha Desai</span>
-                    </li>
-                    <li className="leftbarFriend">
-                        <img src="./assets/person/1.jpg" alt="" className="leftbarFriendImg" />
+                        <img src="" alt="" className="leftbarFriendImg" />
                         <span className="leftbarFriendName">Lakha Desai</span>
                     </li>
                 </ul>

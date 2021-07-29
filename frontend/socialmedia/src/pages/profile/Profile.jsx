@@ -8,6 +8,7 @@ import EditProfile from '../../components/EditProfile/EditProfile'
 import { AuthContext } from '../../context/AuthContext';
 import { Link, useParams } from 'react-router-dom'
 import api from '../../apiCalls'
+import ImageUploadDialog from '../../components/ImageUploadDialog/ImageUploadDialog'
 
 export default function Profile() {
     const PF = "http://localhost:8800/images/"
@@ -73,6 +74,7 @@ export default function Profile() {
                             <div className="profileCover">
                                 <img src={PF + (user.coverPic ? user.coverPic : "cover.jpg")} alt="" className="profileCoverImg" />
                                 <img src={PF + (user.profilePic ? user.profilePic : "noAvatar.png")} alt="" className="profileUserImg" />
+                                <ImageUploadDialog user={user}/>
                             </div>
 
                             <div className="profileInfo">

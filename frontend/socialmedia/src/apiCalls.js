@@ -142,16 +142,18 @@ const api = {
             console.log(err)
         }
     },
-    updateUserProfile: async (uid, updateData) =>{
+    updateUserProfile: async (uid, updateData, filedata = null) =>{
         try {
+            if(filedata != null){
+                await axios.post("http://localhost:8800/api/upload", filedata);
+            }
             await axios.put("http://localhost:8800/api/users/" + uid, updateData);
             return true;
         } catch (err) {
             console.log(err);
             return false;
         }
-    }
-    
+    }  
     
 
 }
