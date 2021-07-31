@@ -84,7 +84,7 @@ const api = {
     },
     sharePost: async (postdata, filedata) => {
         try {
-            if(filedata){
+            if (filedata) {
                 await axios.post("http://localhost:8800/api/upload", filedata);
             }
             return await axios.post("http://localhost:8800/api/posts/", postdata)
@@ -104,7 +104,7 @@ const api = {
             console.log(err)
         }
     },
-    getFriends: async () =>{
+    getFriends: async () => {
         try {
             const friends = await axios.get("http://localhost:8800/api/users/friends/get")
             return friends.data.data;
@@ -112,7 +112,7 @@ const api = {
             console.log(err);
         }
     },
-    searchUsers: async (key) =>{
+    searchUsers: async (key) => {
         try {
             const users = await axios.get("http://localhost:8800/api/users/search/" + key)
             return users.data.data;
@@ -120,7 +120,7 @@ const api = {
             console.log(err)
         }
     },
-    getUserPosts: async (pid)=>{
+    getUserPosts: async (pid) => {
         try {
             const res = await axios.get("http://localhost:8800/api/posts/userPosts/" + pid);
             return res.data.data;
@@ -142,9 +142,9 @@ const api = {
             console.log(err)
         }
     },
-    updateUserProfile: async (uid, updateData, filedata = null) =>{
+    updateUserProfile: async (uid, updateData, filedata = null) => {
         try {
-            if(filedata != null){
+            if (filedata != null) {
                 await axios.post("http://localhost:8800/api/upload", filedata);
             }
             await axios.put("http://localhost:8800/api/users/" + uid, updateData);
@@ -153,8 +153,34 @@ const api = {
             console.log(err);
             return false;
         }
-    }  
-    
+    },
+    getConversations: async () => {
+        try {
+            const res = await axios.get("http://localhost:8800/api/conversation/");
+            return res.data.data;
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    getMessages: async (convId) => {
+        try {
+            const res = await axios.get("http://localhost:8800/api/conversation/" + convId);
+            return res.data.data;
+        } catch (err) {
+            console.log(err);
+            return err;
+        }
+    },
+    sendMessage: async (msgdata) => {
+        try {
+            await axios.post("http://localhost:8800/api/message/", msgdata);
+            return true;
+        } catch (err) {
+            console.log(err)
+            return err;
+        }
+    }
+
 
 }
 export default api;

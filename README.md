@@ -2,11 +2,18 @@
 ## Build using MERN.
 
 ####Steps:
-1.  cd backend (change current directory to backend)
-2. npm start
-3. npm run authStart
-4. change current directory to frontend/socialmedia
-5. npm start
+1. **open termincal**
+2. change current directory to backend
+3. npm start
+4. **(open new terminal) **
+5. change current directory to backend
+6. npm run authStart
+7. **(open new terminal) **
+8. change current directory to frontend/socialmedia
+9. npm start
+10. **(open new terminal )**
+11. change current directory to socketServer
+12. npm start
 
 Bingo :blush:
 

@@ -127,10 +127,15 @@ router.get("/friends/get", authenticateToken, async (req, res) => {
         const user = await User.findById(req.user.userId);
         const friends = await Promise.all(
             user.followings.map(friendId => {
-                return { _id, username, profilePic } = User.findById(friendId);
+                return User.findById(friendId);
             })
         )
-        res.status(200).json({ 'ok': true, 'data': friends });
+        const friends_data = []
+        friends.forEach(element => {
+            const {_id, username, profilePic} = element
+            friends_data.push({_id, username, profilePic})
+        });
+        res.status(200).json({ 'ok': true, 'data': friends_data });
     } catch (err) {
         res.status(500).json({ 'ok': false })
     }

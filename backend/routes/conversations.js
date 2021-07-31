@@ -51,12 +51,12 @@ router.get('/:id', authenticateToken, async (req, res) => {
 })
 
 //get user's conversations list
-router.get('/get', authenticateToken, async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     try {
         const conversations = await Conversation.find({ members: { $in: [req.user.userId] } });
         res.status(200).json({ 'ok': true, 'data': conversations });
-
     } catch (err) {
+        console.log('err')
         res.status(500).json({ 'ok': false })
     }
 });
