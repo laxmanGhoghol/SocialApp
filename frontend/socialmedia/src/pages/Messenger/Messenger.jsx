@@ -14,14 +14,28 @@ export default function Messenger() {
     const [currentChat, SetcurrentChat] = useState(null); //current conversation
     const [messages, SetMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
+    const [onlineUsers, setOnlineUsers] = useState([]);
     const [arrivalMessage, setArrivalMessage] = useState(null);
     const scrollref = useRef();
-    const socket = useRef(io("ws://localhost:8900"))
+    const socket = useRef()
+
+    useEffect(() => {
+        socket.current = io("ws://localhost:8900");
+        socket.current.on("getMessage", msg => {
+            setArrivalMessage({
+                senderId: msg.senderId,
+                text: msg.text,
+                createdAt: Date.now()
+            });
+        })
+    }, [])
 
     useEffect(() => {
         socket.current.emit("addUser", user._id, localStorage.getItem('accessToken'));
         socket.current.on("getUsers", (users) => {
-            console.log(users);
+            setOnlineUsers(
+                user.followings.filter((f) => users.some((u)=> u.userId === f))
+            );
         });
 
     }, [user])
@@ -74,16 +88,6 @@ export default function Messenger() {
         }
     }
 
-    useEffect(() => {
-        socket.current.on("getMessage", msg => {
-            setArrivalMessage({
-                senderId: msg.senderId,
-                text: msg.text,
-                createdAt: Date.now()
-            });
-        })
-    }, [])
-
     return (
         <>
             <TopBar />
@@ -122,7 +126,7 @@ export default function Messenger() {
                 </div>
                 <div className="ChatOnline">
                     <div className="chatOnlineWrapper">
-                        <ChatOnline />
+                        <ChatOnline onlineUsers={onlineUsers} setCurrentChat={SetcurrentChat} currUserId={user._id} />
                     </div>
                 </div>
             </div>

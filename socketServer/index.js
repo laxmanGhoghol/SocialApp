@@ -1,4 +1,3 @@
-const axios = require('axios')
 //starting server on 8900 port 
 const io = require('socket.io')(8900, {
     cors: {
@@ -8,15 +7,6 @@ const io = require('socket.io')(8900, {
 
 let users = []; //user array containing userid and socket id
 
-//get user's friends 
-const getFriends = async (token) => {
-    try {
-        const friends = await axios.get("http://localhost:8800/api/users/friends/get", { headers: { Authorization: `Bearer ${token}` } });
-        return friends.data.data;
-    } catch (err) {
-        console.log(err);
-    }
-}
 
 // add user to users array
 const addUser = (userId, socketId) => {
@@ -39,9 +29,7 @@ io.on("connection", (socket) => {
     //on connection
     socket.on("addUser", (userId, token) => {
         addUser(userId, socket.id) //add user to users list
-        getFriends(token).then((res) => {
-            io.emit("getUsers", res)
-        });
+        io.emit("getUsers", users)
     })
 
     //send and receive messages

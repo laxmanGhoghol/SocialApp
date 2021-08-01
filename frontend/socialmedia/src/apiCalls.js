@@ -179,6 +179,14 @@ const api = {
             console.log(err)
             return err;
         }
+    },
+    getConversationWithTwoId: async (firstId, secondId) =>{
+        try {
+            const conv = await axios.get("http://localhost:8800/api/conversation/find/" + firstId + "/" + secondId);
+            return conv.data.data;
+        } catch (err) {
+            console.log(err)
+        }
     }
 
 

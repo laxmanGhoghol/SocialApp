@@ -61,6 +61,17 @@ router.get('/', authenticateToken, async (req, res) => {
     }
 });
 
+//get conversation including two users
+router.get("/find/:firstUserId/:secondUserId", authenticateToken, async (req, res) => {
+    try {
+        const conversation = await Conversation.findOne({ members: { $all: [req.params.firstUserId, req.params.secondUserId] } });
+        res.status(200).json({ 'ok': false, 'data': conversation });
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ 'ok': false })
+    }
+})
+
 //delete conversation
 router.delete('/delete/:id', authenticateToken, async (req, res) => {
     try {
