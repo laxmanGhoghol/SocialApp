@@ -4,7 +4,6 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const dotenv = require('dotenv')
 const mongooes = require('mongoose')
-const { json } = require("express")
 const authRoute = require("./routes/auth")
 const cors = require('cors')
 
