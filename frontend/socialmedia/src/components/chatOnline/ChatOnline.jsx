@@ -18,6 +18,7 @@ export default function ChatOnline({ onlineUsers, setCurrentChat, currUserId }) 
         setOnlineFriends(friends.filter(f => onlineUsers.includes(f._id)));
     }, [onlineUsers, friends])
     const handleChatOnlineClick = (user)=>{
+        console.log("clicked to chat", user)
         api.getConversationWithTwoId(currUserId, user._id).then((res)=>{
             setCurrentChat(res);
         })

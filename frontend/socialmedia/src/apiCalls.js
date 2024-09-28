@@ -183,6 +183,10 @@ const api = {
     getConversationWithTwoId: async (firstId, secondId) =>{
         try {
             const conv = await axios.get("http://localhost:8800/api/conversation/find/" + firstId + "/" + secondId);
+            if(!conv.data.ok){
+             const createConvRes =  await axios.post("http://localhost:8800/api/conversation/create", {receiverId: secondId});
+             return createConvRes.data.data;
+            }
             return conv.data.data;
         } catch (err) {
             console.log(err)
