@@ -17,22 +17,23 @@ router.post("/register", async (req, res) => {
             email: req.body.email,
             password: hashpass
         });
+        console.log(newuser);
         //save new user
         const val = await newuser.save();
         res.status(200).json({ 'ok': true });
     }
     catch (err) {
+        console.error(err);
         res.status(404).json({ 'ok': false });
     }
 });
 
 //user login
 router.post("/login", async (req, res) => {
-    try {
         //check if userid exists
         const val = await User.findOne({ email: req.body.email }).lean();
-        !val && res.status(404).json({ 'ok': false, 'err': 'wrong email' }); //if one side of AND is null it will never call second operand(if first op true then call second operrand)
-
+        !val && res.status(404).json({ 'ok': false, 'err': 'wrong email' }); 
+        console.log(val)
         const valPass = await bcrypt.compare(req.body.password, val.password);
         !valPass && res.status(400).json({ 'ok': false, 'err': 'wrong password' }); // if valPass is is true then call second operand
 
@@ -43,11 +44,10 @@ router.post("/login", async (req, res) => {
         const refreshTokendata = new refreshTokensData({
             token: refreshToken
         });
+
         await refreshTokendata.save(); // saving refresh token in database
         res.status(200).json({'ok': true, 'accessToken': accessToken, 'refreshToken': refreshToken });
-    } catch (err) {
-        res.status(400).json({ 'ok': false })
-    }
+        return;
 });
 
 //to refresh token

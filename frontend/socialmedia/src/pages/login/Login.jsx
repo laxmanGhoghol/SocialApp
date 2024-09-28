@@ -9,7 +9,7 @@ export default function Login() {
 
     const email = useRef();
     const password = useRef();
-    const { isFetching, dispatch } = useContext(AuthContext);
+    const { isFetching,error, dispatch } = useContext(AuthContext);
     const handleSubmit = (e) => {
         e.preventDefault();
         api.login({ email: email.current.value, password: password.current.value }, dispatch)
@@ -24,6 +24,7 @@ export default function Login() {
                 </div>
                 <div className="loginRight">
                     <form className="loginBox">
+                        {error && <p className='error'>Invalid credentials</p>}
                         <input ref={email} type="email" className="loginInput" />
                         <input ref={password} type="password" className="loginInput" />
                         <button onClick={handleSubmit} type="submit" className="loginBtn" disabled={isFetching}>

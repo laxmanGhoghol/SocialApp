@@ -71,3 +71,6 @@
     cursor: pointer;
     align-self: center;
 }
+.error{
+    color:red;
+}

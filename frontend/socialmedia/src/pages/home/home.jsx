@@ -1,5 +1,5 @@
 import React from 'react'
-import './Home.css'
+import './home.css'
 import TopBar from '../../components/topbar/TopBar'
 import LeftBar from '../../components/leftbar/LeftBar'
 import RightBar from '../../components/rightbar/RightBar'
