@@ -1,6 +1,11 @@
 # Social Media App
 ## Build using MERN.
 
+## Description:
+Here users can register and login to the application once thats done they post or follow someone see their posts and can like a posts.
+Uers homepage will show their recent posts and information abouit. there is another feature called chatroom where they can talk to people in their 
+network. its developed using socketJs so our users can have realtime chat.
+
 ####Steps:
 1. **open termincal**
 2. change current directory to backend
